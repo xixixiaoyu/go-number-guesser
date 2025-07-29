@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
 
 // Game 结构体用于管理游戏状态
@@ -20,8 +19,6 @@ type Game struct {
 // NewGame 创建新游戏实例
 func NewGame() *Game {
 	// 设置随机数种子
-	rand.Seed(time.Now().UnixNano())
-
 	return &Game{
 		targetNumber: rand.Intn(100) + 1, // 生成 1-100 之间的随机数
 		attempts:     0,
