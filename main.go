@@ -12,8 +12,8 @@ import (
 
 // Game 结构体用于管理游戏状态
 type Game struct {
-	targetNumber int    // 目标数字
-	attempts     int    // 猜测次数
+	targetNumber int            // 目标数字
+	attempts     int            // 猜测次数
 	scanner      *bufio.Scanner // 输入扫描器
 }
 
@@ -21,7 +21,7 @@ type Game struct {
 func NewGame() *Game {
 	// 设置随机数种子
 	rand.Seed(time.Now().UnixNano())
-	
+
 	return &Game{
 		targetNumber: rand.Intn(100) + 1, // 生成 1-100 之间的随机数
 		attempts:     0,
@@ -33,17 +33,17 @@ func NewGame() *Game {
 func (g *Game) Start() {
 	fmt.Println("欢迎来到猜数字游戏！")
 	fmt.Println("我已经想好了一个 1-100 之间的数字，请开始猜测：")
-	
+
 	for {
 		guess, err := g.getPlayerGuess()
 		if err != nil {
 			fmt.Printf("输入错误：%v，请重新输入。\n", err)
 			continue
 		}
-		
+
 		g.attempts++
 		result := g.checkGuess(guess)
-		
+
 		if result == 0 {
 			// 猜对了
 			fmt.Printf("恭喜你！猜对了！你总共猜了 %d 次。\n", g.attempts)
@@ -59,25 +59,25 @@ func (g *Game) Start() {
 // getPlayerGuess 获取玩家的猜测输入
 func (g *Game) getPlayerGuess() (int, error) {
 	fmt.Print("请输入你的猜测：")
-	
+
 	if !g.scanner.Scan() {
 		return 0, fmt.Errorf("读取输入失败")
 	}
-	
+
 	input := strings.TrimSpace(g.scanner.Text())
 	if input == "" {
 		return 0, fmt.Errorf("输入不能为空")
 	}
-	
+
 	guess, err := strconv.Atoi(input)
 	if err != nil {
 		return 0, fmt.Errorf("请输入一个有效的数字")
 	}
-	
+
 	if guess < 1 || guess > 100 {
 		return 0, fmt.Errorf("数字必须在 1-100 之间")
 	}
-	
+
 	return guess, nil
 }
 
@@ -96,17 +96,17 @@ func (g *Game) checkGuess(guess int) int {
 // askContinue 询问是否继续游戏
 func askContinue() bool {
 	scanner := bufio.NewScanner(os.Stdin)
-	
+
 	for {
 		fmt.Print("是否继续游戏？(y/n)：")
-		
+
 		if !scanner.Scan() {
 			fmt.Println("读取输入失败，默认退出游戏。")
 			return false
 		}
-		
+
 		input := strings.ToLower(strings.TrimSpace(scanner.Text()))
-		
+
 		switch input {
 		case "y", "yes", "是":
 			return true
